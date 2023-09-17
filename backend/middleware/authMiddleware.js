@@ -6,9 +6,9 @@ const authMiddleware = (req, res, next) => {
     // const token = req.header('Authorization');
     const cookies = cookie.parse(req.headers.cookie || ''); // Parse cookies from request
     const token = cookies.token; // Retrieve the token from the cookie named "token"
-    if (!token) {
-        return res.status(401).json({ error: 'Unauthorized' });
-    }
+    // if (!token) {
+    //     return res.status(401).json({ error: 'Unauthorized' });
+    // }
   
     try {
         const decoded = jwt.verify(token, 'secretKey');
@@ -16,7 +16,7 @@ const authMiddleware = (req, res, next) => {
         console.log("User ID in AuthMiddleware: ",req.userId)
         next();
     } catch (error) {
-        res.status(401).json({ error: 'Invalid token' });
+        res.status(401).json({ msg: 'Unauthorized' });
     }
 };
 

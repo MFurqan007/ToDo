@@ -11,6 +11,8 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [isLoggenIn, setIsLoggedIn] = useState(false);
   const [error, setError] = useState(false);
+  const [signUp, setSignUp] = useState(false);
+
   
   const LoginUser = async (e) =>{
     e.preventDefault()
@@ -28,21 +30,23 @@ export default function Login() {
 
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 1 second.
 
-      const tokenAccessed = Cookies.get('token');
-      console.log("Token Accessed:", tokenAccessed)
-    
-      const decodedToken = jwt_decode(tokenAccessed);
-      const userId = decodedToken.userId;
-      alert(userId)
+      alert("User Logged In Successfully!")
 
       // Navigate
       setIsLoggedIn(true)
     } catch (error) {
+      // console.log("Hello Error")
+      setError(true)
+      setEmail('')
+      setPassword('')
+
       console.error('Error:', error);
     }
   };
 
-
+  const redirectSignUp = () => {
+    setSignUp(true);
+  };
   const handleEmail = (event) => {
     setEmail(event.target.value);
   };
@@ -52,8 +56,12 @@ export default function Login() {
 
   return (
     <>
-       {isLoggenIn && (
+        {isLoggenIn && (
           <Navigate to="/Home" />
+        )}
+        
+        {signUp && (
+          <Navigate to="/SignUp" />
         )}
 
         <div className='w-screen h-screen absolute z-0'>
@@ -76,14 +84,23 @@ export default function Login() {
                   value={password}
                   onChange={handlePassword}
                 />
-                <div className='w-[90%] h-[5vh] border-2 border-white mt-[5vh]'>
+                <div className='w-[90%] h-[5vh] mt-[5vh]'>
                   {/* Display this Error Meessage when Input field is not validated */}
-                  <span className='text-white font-serif text-[14px]'>Input Field is Empty Or Incorrect</span>
+                  {error && (
+                    <span className='text-white font-serif text-[14px]'>Input Field is Empty Or Incorrect</span>
+                  )}
+
                 </div>
                 <div className='w-[90%] h-[5vh] flex justify-start items-center'>
                   <span className='text-white font-serif text-[14px]'>Don't have an Account? </span>
                   <div className='w-[10px]'/>
-                  <span className='text-white font-serif text-[14px]'> Signup!</span>
+
+                  <span 
+                    className='text-white font-serif text-[14px] hover:cursor-pointer hover:underline'
+                    onClick={redirectSignUp}
+                  > 
+                    Signup!
+                  </span>
                 </div>
                 <div className='w-[90%] h-[5vh] flex justify-center items-center'>
                   <div 

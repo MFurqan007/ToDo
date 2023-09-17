@@ -2,13 +2,14 @@ import React from 'react'
 import LoginBg from '../assets/LoginBg.svg';
 import { useState } from 'react'
 import axios from 'axios';
+import { Navigate } from "react-router-dom";
 
 export default function Signup() {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
-
+    const [login, setLogin] = useState(false);
 
     const CreateUser = async (e) =>{
         e.preventDefault()
@@ -24,9 +25,14 @@ export default function Signup() {
           setUsername('')
           setEmail('')
           setPassword('')
+          redirectLogin()
         } catch (error) {
           console.error('Error:', error);
         }
+    };
+
+    const redirectLogin = () => {
+        setLogin(true);
     };
     
     const handleUsername = (event) => {
@@ -40,6 +46,9 @@ export default function Signup() {
     };
   return (
     <>
+        {login && (
+          <Navigate to="/Login" replace/>
+        )}
         <div className='w-screen h-screen absolute z-0'>
             <img src={LoginBg} alt="Background" className='w-screen object-cover h-[100%]'/>
         </div>
@@ -70,7 +79,12 @@ export default function Signup() {
                 <div className='w-[90%] h-[5vh] mt-[5vh] flex justify-start items-center'>
                     <span className='text-white font-serif text-[14px]'>Already have an Account? </span>
                 <div className='w-[10px]'/>
-                    <span className='text-white font-serif text-[14px]'> Login!</span>
+                    <span 
+                        className='text-white font-serif text-[14px] hover:cursor-pointer hover:underline'
+                        onClick={redirectLogin}
+                    > 
+                        Login!
+                    </span>
                 </div>
                 <div className='w-[90%] h-[5vh] mt-[5vh] flex justify-center items-center'>
                     <div 
